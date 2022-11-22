@@ -12,53 +12,48 @@
 	<table class="table table-striped">
             <thead class="table-primary">
                 <th> Nr.</th>
-                <th> Product Name</th>
                 <th> Store </th>
                 <th> Purchase Date</th>
-                <th> Quantity</th>
-                <th>Price </th>
-                <th>Subtotal </th>
                 <th colspan="2">Operations</th>
             </thead>
             <tbody>
              <% int i = 1; %>
              <% 
              List<Purchase> model = (List<Purchase>) request.getAttribute("listAllPurchase");
-             List<Product> products = (List<Product>) request.getAttribute("repo");
 
              for(Purchase item: model)  {
-
-             	List<Product> name = products.stream().filter(x -> x.getId() == item.getId()).collect(Collectors.toList());
              %>
              	<tr>
                     <th><%= i++ %></th>
-                    <td><%= name.get(0).getName()%> </td>
                     <td><%= item.getStore() %></td>
                     <td><%= item.getDate() %></td>
-                    <td><%= item.getQuantity() %></td>
-                    <td><%= item.getPrice() %></td>
-                    <td><%= item.getPrice() * item.getQuantity() %></td>
                     <td>
-	                    <form action="${contextPath }/purUpdate" method="get">
-	                    	<input type="hidden" value="<%= item.getId() %>" name="id" />
-	                    	<button type ="submit" class="btn btn-primary btn-md"> Edit </button>  	
-	                    </form>
-	                    
-	                    <form action="${contextPath }/deletePurchase" method="get">
-	                    	<input type="hidden" value="<%= item.getId() %>" name="id"/>
-	                    	<button type ="submit" class="btn btn-danger btn-md"> Delete </button>  	
-	                    </form>
+                    	<div class="row">
+		                    	<div class="col"> 
+				                    <form action="${contextPath }/purUpdate" method="get">
+				                    	<input type="hidden" value="<%= item.getId() %>" name="id" />
+				                    	<button type ="submit" class="btn btn-primary btn-md"> Edit </button>  	
+				                    </form>
+				                 </div>
+		                    	<div class="col"> 
+				                    <form action="${contextPath }/deletePurchase" method="get">
+				                    	<input type="hidden" value="<%= item.getId() %>" name="id"/>
+				                    	<button type ="submit" class="btn btn-danger btn-md"> Delete </button>  	
+				                    </form>
+				                 </div>
+				          </div>
                     </td>
                 </tr>
 
              <% } %>
             </tbody>
         </table>
+        	<img alt="landscape" src="/images/land.png">
 			<!-- Shows in coming message from purchase controller /updatePurchase  -->
 			<hr/>
 			<span class="text text-success"> <%= request.getAttribute("success") != null ? request.getAttribute("success") : " "%></span>
 			<hr/>
-	<a href="${contextPath }/" > Back to Home</a>
+	<a href="${contextPath }/home" > Back to Home</a>
 </div>
 
 <%@include file="./footer.jsp"  %>

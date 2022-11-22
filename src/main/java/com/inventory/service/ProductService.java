@@ -8,12 +8,12 @@ public interface ProductService {
 	
 	public List<Product> getAllProducts();
 	
-	public Product findAProduct(int id);
+	public Product findAProduct(long id);
 	
 	public void saveProduct(Product product);
 	
 	public void updateProduct(Product product);
 	
-	public void deleteProduct(int id);
+	public void deleteProduct(long id);
 
 }

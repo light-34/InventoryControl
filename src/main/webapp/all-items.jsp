@@ -1,4 +1,4 @@
-<%@page import="com.inventory.entity.Product"%>
+<%@page import="com.inventory.entity.Item"%>
 <%@page import="org.hibernate.sql.Delete"%>
 <%@page import="java.util.*" %>
 <%@include file="./header.jsp" %>
@@ -8,32 +8,34 @@
 	 <table class="table table-striped">
             <thead class="table-primary">
                 <th> Nr.</th>
-                <th> Product Name</th>
-                <th> Manufacturer</th>
-                <th> ASIN</th>
-                <th>EAN </th>
-                <th>Details</th>
-                <th> Created Date</th>
+                <th> Product ID</th>
+                <th> Purchase ID</th>
+                <th>State</th>
+                <th> Expiration Date</th>
+                <th> Quantity</th>
+                <th>Price </th>
+                
                 <th colspan="2">Operations</th>
             </thead>
             <tbody>
              <% int i = 1; %>
-            <c:forEach items="${listProducts}" var="item">          	
+            <c:forEach items="${listItems}" var="item">          	
                 <tr>              
                     <th><%= i++ %></th>
-                    <td>${item.name }</td>
-                    <td>${item.manufacturer }</td>
-                    <td>${item.asin }</td>
-                    <td>${item.ean }</td>
-                    <td>${item.details }</td>
-                    <fmt:parseDate value="${item.date }" pattern="yyyy-MM-dd'T'HH:mm" var="datepattern" type="both" />
-                    <td><fmt:formatDate pattern="dd/MMM/yyyy HH:mm" value = "${datepattern }" /></td>
+                    <td>${item.product.id }</td>
+                    <td>${item.purchase.id }</td>
+                    <td>${item.state }</td>
+                    <fmt:parseDate value="${item.expDate }" pattern="yyyy-MM-dd" var="datepattern" type="date" />
+                    <td><fmt:formatDate pattern="dd/MMM/yyyy" value = "${datepattern }" /></td>
+                    <td>${item.quantity }</td>
+                    <td>${item.price}</td>
+                    
                     <td>
-		                    <c:url var="updateLink" value="${contextPath }/updateProduct">
+		                    <c:url var="updateLink" value="${contextPath }/updateItem">
 		                    	<c:param name="id" value = "${item.id }" />
 		                    </c:url>
 		                    
-		                    <c:url var="deleteLink" value="${contextPath }/deleteProduct">
+		                    <c:url var="deleteLink" value="${contextPath }/item/delete">
 		                    	<c:param name="id" value = "${item.id }" />
 		                    </c:url>
 		                    

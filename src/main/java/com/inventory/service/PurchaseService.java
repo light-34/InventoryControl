@@ -10,10 +10,10 @@ public interface PurchaseService {
 	
 	public List<Purchase> getAllPurchases();
 	
-	public Purchase findAPurchase(int id);
+	public Purchase findAPurchase(long id);
 	
 	public void savePurchase(Purchase purchase);
 	
-	public void deletePurchase(int id);
+	public void deletePurchase(long id);
 
 }

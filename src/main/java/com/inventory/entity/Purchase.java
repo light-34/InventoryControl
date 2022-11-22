@@ -2,7 +2,6 @@ package com.inventory.entity;
 
 import java.time.LocalDate;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,10 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -25,62 +21,29 @@ public class Purchase {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
-	@Column(name = "prod_id")
-	@NotNull(message = "Cant be null")
-	private int prodid;
-	
-	@Column(name = "quantity")
-	@NotNull(message = "Please add quantity")
-	private int quantity;
-	
-	@Column(name="pur_price", precision = 10, scale = 2)
-	@DecimalMin(value = "1.0", message = "Enter a valid Number > 1.0")
-	private double price;
+	private long id;
 	
 	@Column(name="pur_store", length = 40)
 	@NotEmpty(message = "Can't be Empty")
 	private String store;
 	
 	@Column(name = "pur_date", length = 50)
-	//@NotEmpty(message = "Select purchase Date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;	
 
-	@OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Product> product;
+	@OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY, 
+			cascade = {CascadeType.DETACH, 
+							  CascadeType.MERGE,
+							  CascadeType.PERSIST,
+							  CascadeType.REFRESH})
+	private Set<Item> items;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
-	}
-
-	public int getProdid() {
-		return prodid;
-	}
-
-	public void setProdid(int prodid) {
-		this.prodid = prodid;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
 	}
 
 	public String getStore() {
@@ -99,13 +62,12 @@ public class Purchase {
 		this.date = date;
 	}
 
-	public Set<Product> getProduct() {
-		return product;
+	public Set<Item> getItems() {
+		return items;
 	}
 
-	public void setProduct(Set<Product> product) {
-		this.product = product;
+	public void setItems(Set<Item> items) {
+		this.items = items;
 	}
-	
 
 }
