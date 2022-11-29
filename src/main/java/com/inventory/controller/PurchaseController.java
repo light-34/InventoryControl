@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.inventory.entity.Purchase;
 import com.inventory.service.PurchaseService;
+import com.inventory.service.StoreService;
 
 @Controller
 @RequestMapping("/purchase")
@@ -23,22 +24,26 @@ public class PurchaseController {
 	@Autowired
 	private PurchaseService service;
 	
+	@Autowired
+	private StoreService storeService;
+	
 	@GetMapping("/all")
 	public String getAllPurchases(Model model) {
 		model.addAttribute("listAllPurchase", service.getAllPurchases());
-		return "all-purchases";
+		return "purchase/all-purchases";
 	}
 	
 	@GetMapping("/add")
 	public String showPurchaseForm(Model model) {
 		model.addAttribute("pur", new Purchase());
-		return "add-purchase";
+		model.addAttribute("listStores", storeService.getAllStores());
+		return "purchase/add-purchase";
 	}
 	
 	@PostMapping("/create")
 	public String addPurchase(@Valid @ModelAttribute("pur") Purchase purchase, BindingResult result) {
 		if (result.hasErrors()) {
-			return "add-purchase";
+			return "purchase/add-purchase";
 		}
 		service.savePurchase(purchase);
 		return "redirect:all";
@@ -49,7 +54,7 @@ public class PurchaseController {
 	public String updatePurchase(@RequestParam("id") long id, Model model) {
 		Purchase purchase = service.findAPurchase(id);
 		model.addAttribute("pur", purchase);
-		return "edit-purchase";
+		return "purchase/edit-purchase";
 	}
 	  
 	  @PostMapping("/update") public String updatePurchaseMethod(HttpServletRequest req,

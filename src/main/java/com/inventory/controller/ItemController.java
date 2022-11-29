@@ -39,7 +39,7 @@ public class ItemController {
 		List<Item> itemList = service.getAllItems();
 		model.addAttribute("listItems", itemList);
 		
-		return "all-items";
+		return "item/all-items";
 	}
 	
 	@GetMapping("/add")
@@ -48,7 +48,7 @@ public class ItemController {
 		model.addAttribute("listProduct", productService.getAllProducts());
 		model.addAttribute("listPurchases", purchaseService.getAllPurchases());
 		model.addAttribute("states", service.getStates());
-		return "add-item";
+		return "item/add-item";
 	}
 	
 	@PostMapping("/create")
@@ -65,13 +65,13 @@ public class ItemController {
 	public String updateItem(@RequestParam(name = "id") long id, Model model) {
 		Item item = service.findAnItem(id);
 		model.addAttribute("theItem", item);
-		return "edit-item";
+		return "item/edit-item";
 	}
 	
 	@PostMapping("/update")
 	public String updateItemMethod(@Valid @ModelAttribute("theItem") Item item, BindingResult result) {
 		if (result.hasErrors()) {
-			return "edit-item";
+			return "item/edit-item";
 		} else {
 			service.updateItem(item);
 			return "redirect:all";

@@ -1,4 +1,4 @@
-<%@include file="./header.jsp" %>
+<%@include file="../header.jsp" %>
 
 <div class="container" >
 	<form:form modelAttribute="prod" action="${contextPath }/prodUpdate" method="POST">
@@ -48,4 +48,4 @@
 
 </div>
 
-<%@include file="./footer.jsp"  %>
+<%@include file="../footer.jsp"  %>

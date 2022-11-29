@@ -1,4 +1,4 @@
-<%@include file="./header.jsp" %>
+<%@include file="../header.jsp" %>
 
 <div class="container" >
 <h2 class="text text-black-50 text-center mb-4"> Add a new Purchase </h2>
@@ -6,11 +6,14 @@
 	<form:form modelAttribute="pur" action="${contextPath }/purchase/create">	
          
          <div class="col-sm-4 mb-4">
-         		<form:label path="store" class="mb-2">Purchased Store</form:label>
-              <form:input type="text" path="store" class="form-control"
-                                autofocus="true" />
-              <form:errors path="store" />
-         </div>
+        	<form:select path="store" class="form-select form-select-sm">
+        		<form:option value="0">Select A Store</form:option>
+        		<c:forEach items="${listStores }" var="storeElem">
+        			<form:option value="${storeElem.getId() } "> ${storeElem.getName() }</form:option>
+        		</c:forEach>
+        	</form:select>
+        	<form:errors path="store" />
+        </div>
         
          <div class="col-sm-4 mb-4">
          	<form:label path="date" class="mb-2">Purchase Date</form:label>
@@ -27,4 +30,4 @@
 	<a href="${contextPath }/home" > Back to Home</a>
 </div>
 
-<%@include file="./footer.jsp"  %>
+<%@include file="../footer.jsp"  %>

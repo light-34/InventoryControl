@@ -1,4 +1,4 @@
-<%@include file="./header.jsp" %>
+<%@include file="../header.jsp" %>
 
 <div class="container" >
 <h2 class="text text-black-50 text-center mb-4"> Add a new Item </h2>
@@ -64,4 +64,4 @@
 	<a href="${contextPath }/home" > Back to Home</a>
 </div>
 
-<%@include file="./footer.jsp"  %>
+<%@include file="../footer.jsp"  %>

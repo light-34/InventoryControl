@@ -28,9 +28,9 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public void saveProduct(Product product) {
+	public Product saveProduct(Product product) {
 		product.setAsin(product.getAsin().toUpperCase());
-		repository.save(product);	
+		return repository.save(product);
 	}
 
 	@Override

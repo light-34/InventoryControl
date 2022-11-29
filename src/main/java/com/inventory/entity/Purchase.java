@@ -9,9 +9,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -23,10 +24,6 @@ public class Purchase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name="pur_store", length = 40)
-	@NotEmpty(message = "Can't be Empty")
-	private String store;
-	
 	@Column(name = "pur_date", length = 50)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;	
@@ -37,6 +34,14 @@ public class Purchase {
 							  CascadeType.PERSIST,
 							  CascadeType.REFRESH})
 	private Set<Item> items;
+	
+	@OneToOne(fetch = FetchType.LAZY, 
+			cascade = {CascadeType.DETACH, 
+							  CascadeType.MERGE,
+							  CascadeType.PERSIST,
+							  CascadeType.REFRESH})
+	@JoinColumn(name = "store_id")
+	private Store store;
 
 	public long getId() {
 		return id;
@@ -44,14 +49,6 @@ public class Purchase {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getStore() {
-		return store;
-	}
-
-	public void setStore(String store) {
-		this.store = store;
 	}
 
 	public LocalDate getDate() {
@@ -68,6 +65,14 @@ public class Purchase {
 
 	public void setItems(Set<Item> items) {
 		this.items = items;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
 	}
 
 }

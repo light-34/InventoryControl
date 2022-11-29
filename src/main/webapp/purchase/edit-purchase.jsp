@@ -1,7 +1,7 @@
-<%@include file="./header.jsp" %>
+<%@include file="../header.jsp" %>
 
 <div class="container" >
-	<form:form modelAttribute="pur" action="${contextPath }/updatePurchase" >
+	<form:form modelAttribute="pur" action="${contextPath }/purchase/update" >
 		<form:hidden path="id" />
 		<div>
         	<form:select path="prodid">
@@ -44,4 +44,4 @@
 
 </div>
 
-<%@include file="./footer.jsp"  %>
+<%@include file="../footer.jsp"  %>
