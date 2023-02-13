@@ -9,10 +9,8 @@
             <thead class="table-primary">
                 <th> Nr.</th>
                 <th> Product Name</th>
-                <th> Manufacturer</th>
-                <th> ASIN</th>
-                <th>EAN </th>
-                <th>Details</th>
+                <th> Category </th>
+                <th> MSRP</th>
                 <th> Created Date</th>
                 <th colspan="3">Operations</th>
             </thead>
@@ -22,10 +20,8 @@
                 <tr>              
                     <th><%= i++ %></th>
                     <td>${item.name }</td>
-                    <td>${item.manufacturer }</td>
-                    <td>${item.asin }</td>
-                    <td>${item.ean }</td>
-                    <td>${item.details }</td>
+                    <td>${item.category }</td>
+                    <td>${item.price }</td>                    
                     <fmt:parseDate value="${item.date }" pattern="yyyy-MM-dd'T'HH:mm" var="datepattern" type="both" />
                     <td><fmt:formatDate pattern="dd/MMM/yyyy HH:mm" value = "${datepattern }" /></td>
                     <td>
@@ -37,21 +33,25 @@
 		                    	<c:param name="id" value = "${item.id }" />
 		                    </c:url>
 		                    
-		                    <c:url var="detailLink" value="${contextPath }/product/details">
+		                    <!-- This is for getting detail of a specified product -->
+		                    <c:url var="detailLink" value="${contextPath }/product/getDetails">
 		                    	<c:param name="id" value = "${item.id }" />
 		                    </c:url>
 		                    
-		                    <div class="row">
-		                    	<div class="col col-sm-4"> 
-		                    		<a href="${updateLink }" class="btn btn-primary btn-sm-2">Edit</a>
-		                    	</div>
-		                    	<div class="col col-sm-4">
-		                    		<a href="${deleteLink }" class="btn btn-danger btn-sm-2">Delete</a>                  		
-		                    	</div>
-		                    	<div class="col col-sm-4">
-		                    		<a href="${detailLink }" class="btn btn-info btn-sm-2">Details</a>                  		
-		                    	</div>
-		                    </div>
+		                    <!-- ONLY ADMIN users can SEE this part -->
+		                    <sec:authorize access="hasRole('ADMIN')"> 
+			                    <div class="row">
+			                    	<div class="col col-sm-4"> 
+			                    		<a href="${updateLink }" class="btn btn-primary btn-sm-2">Edit</a>
+			                    	</div>
+			                    	<div class="col col-sm-4">
+			                    		<a href="${deleteLink }" class="btn btn-danger btn-sm-2">Delete</a>                  		
+			                    	</div>
+			                    	<div class="col col-sm-4">
+			                    		<a href="${detailLink }" class="btn btn-info btn-sm-2">Details</a>                  		
+			                    	</div>
+			                    </div>
+		                    </sec:authorize>
                     </td>
                 </tr>
               </c:forEach>

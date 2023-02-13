@@ -2,6 +2,7 @@ package com.inventory.service;
 
 import java.util.List;
 
+import com.inventory.dto.Items;
 import com.inventory.entity.Item;
 
 public interface ItemService {
@@ -17,5 +18,7 @@ public interface ItemService {
 	public void deleteItem(long id);
 	
 	public List<String> getStates();
+	
+	public void saveListItems(Items item);
 
 }

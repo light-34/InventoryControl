@@ -1,6 +1,7 @@
 package com.inventory.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,7 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -24,27 +27,21 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name = "prod_name", length = 30)
+	@Column(name = "prod_name", length = 50)
 	@NotEmpty(message = "Cant be Empty")
-	@Size(min = 2, max = 25, message = "Size needs to be between 2 to 25 characters")
+	@Size(min = 2, max = 50, message = "Size needs to be between 2 to 25 characters")
 	private String name;
 	
-	@Column(name = "prod_manufacturer", length = 50)
+	@Column(name="prod_category", length = 70)
 	@NotEmpty(message = "Cant be Empty")
-	private String manufacturer;
+	private String category;
 	
-	@Column(name = "prod_asin", unique = true)
-	@NotEmpty(message = "Cant be Empty")
-	private String asin;
-	
-	@Column(name = "prod_ean", length = 50)
-	private String ean;
+	@Column(name = "prod_price", nullable = false)
+	@DecimalMin(value = "1.0", message = "Enter a valid number > 1.0")
+	private double price;
 	
 	@Column(name="img_link", length = 100)
 	private String image;
-	
-	@Column(name = "prod_details", length = 1000)
-	private String details;
 	
 	@Column(name = "prod_cre_date", length = 30)
 	private LocalDateTime date = LocalDateTime.now();
@@ -56,6 +53,16 @@ public class Product {
 					  CascadeType.REFRESH})
 	private Set<Item> items;
 	
+	@OneToOne(mappedBy = "prod", fetch = FetchType.LAZY, 
+			cascade = {CascadeType.DETACH, 
+					  CascadeType.MERGE,
+					  CascadeType.PERSIST,
+					  CascadeType.REFRESH})
+	private Detail details;
+
+	public Product() {
+		
+	}
 
 	public long getId() {
 		return id;
@@ -73,44 +80,28 @@ public class Product {
 		this.name = name;
 	}
 
-	public String getManufacturer() {
-		return manufacturer;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
-	public String getAsin() {
-		return asin;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setAsin(String asin) {
-		this.asin = asin;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
-	public String getEan() {
-		return ean;
-	}
-
-	public void setEan(String ean) {
-		this.ean = ean;
-	}
-	
 	public String getImage() {
 		return image;
 	}
 
 	public void setImage(String image) {
 		this.image = image;
-	}
-
-	public String getDetails() {
-		return details;
-	}
-
-	public void setDetails(String details) {
-		this.details = details;
 	}
 
 	public LocalDateTime getDate() {
@@ -128,5 +119,13 @@ public class Product {
 	public void setItems(Set<Item> items) {
 		this.items = items;
 	}
-	
+
+	public Detail getDetails() {
+		return details;
+	}
+
+	public void setDetails(Detail details) {
+		this.details = details;
+	}
+
 }

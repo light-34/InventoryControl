@@ -3,7 +3,7 @@
 <%@page import="java.util.*" %>
 <%@include file="../header.jsp" %>
 
-<div class="container" >
+<%-- <div class="container" >
 	<h1 class="text text-black-50 text-centre mt-7">Details of A Product</h1>
 	<div class="row justify-content-md-center">
 		<div class="col col-md-2">
@@ -29,6 +29,23 @@
 					<div class="card-text">DETAILS: ${detail.details }</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</div> --%>
+
+<div class="container" >
+	<h1 class="text text-black-50 text-centre mt-7">Details of A Product</h1>
+	<div class="row justify-content-md-center">
+		<div class="col col-md-2">
+			<!--  <img src="/images/product_img/${pr.image }" class="card-img-top" alt="..." height="200" /> -->
+		</div>
+		<div class="col col-lg-4">
+			<h3>${pr.get(0).name }</h3>
+			<p><strong>Category of ${pr.get(0).category}</strong></p>
+			<p><strong>ASIN: </strong><%-- ${detail.asin } --%></p>
+			<p><strong>EAN: </strong><%-- ${detail.ean } --%></p>
+			<p><strong>INGREDIENTS : </strong></br><%-- ${detail.ingredients } --%></p>
+			<p><strong>CERTIFICATE : </strong></br><%-- ${detail.certificate } --%></p>	
 		</div>
 	</div>
 </div>

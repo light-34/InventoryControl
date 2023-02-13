@@ -1,11 +1,15 @@
 package com.inventory.entity;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -28,8 +32,13 @@ public class Store {
 	@Column(name = "store_state", length = 2)
 	private String state;
 	
-	@OneToOne(mappedBy = "store")
-	private Purchase purchase;
+	@OneToMany(mappedBy = "store", 
+			fetch = FetchType.LAZY,
+			cascade = {CascadeType.DETACH, 
+					  CascadeType.MERGE,
+					  CascadeType.PERSIST,
+					  CascadeType.REFRESH})
+	private Set<Purchase> purchase;
 
 	public long getId() {
 		return id;
@@ -63,12 +72,14 @@ public class Store {
 		this.state = state;
 	}
 
-	public Purchase getPurchase() {
+	public Set<Purchase> getPurchase() {
 		return purchase;
 	}
 
-	public void setPurchase(Purchase purchase) {
+	public void setPurchase(Set<Purchase> purchase) {
 		this.purchase = purchase;
 	}
+
+
 	
 }

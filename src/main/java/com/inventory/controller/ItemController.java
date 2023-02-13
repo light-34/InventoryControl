@@ -56,6 +56,7 @@ public class ItemController {
 		if (result.hasErrors()) {
 			return "redirect:add";
 		} else {
+			
 			service.saveItem(item);
 			return "redirect:all";
 		}

@@ -19,7 +19,7 @@
         <!-- Get purchase ID -->
         <div class="col-sm-4 mb-4">
         	<form:select path="purchase" class="form-select form-select-sm">
-        		<form:option value="0">Select A Product</form:option>
+        		<form:option value="0">Select A Purchase Date</form:option>
         		<c:forEach items="${listPurchases }" var="purElem">
         			<form:option value="${purElem.getId() } "> ${purElem.getDate() }</form:option>
         		</c:forEach>

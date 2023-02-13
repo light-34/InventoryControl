@@ -3,7 +3,10 @@ package com.inventory.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.inventory.dto.Items;
 import com.inventory.entity.Item;
 import com.inventory.repository.ItemRepository;
 
@@ -55,6 +58,15 @@ public class ItemServiceImpl implements ItemService {
 		String [] strArr = {"ON", "MB", "QC", "NS"};
 		Arrays.sort(strArr);
 		return new ArrayList<>(Arrays.asList(strArr));
+	}
+
+	@Override
+	public void saveListItems(Items item) {
+		
+		repository.saveAll(item.getItemList());
+		//item.getItemList().stream().forEach(e -> repository.save(e));
+		//Arrays.asList(item).stream().forEach(e -> repository.saveAll(e));
+		
 	}
 
 }

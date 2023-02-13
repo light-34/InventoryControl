@@ -1,13 +1,11 @@
 package com.inventory.controller;
 
+import java.util.Arrays;
 import java.util.List;
-
 import javax.validation.Valid;
 
-import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.inventory.entity.Detail;
 import com.inventory.entity.Product;
+import com.inventory.repository.DetailRepository;
 import com.inventory.service.FileProcessingService;
 import com.inventory.service.ProductService;
 
@@ -28,12 +28,16 @@ public class ProductController {
 	private ProductService service;
 
 	private FileProcessingService fileService;
+	
+	private DetailRepository detailRepository;
 
-	public ProductController(ProductService service, FileProcessingService fileService) {
+	public ProductController(ProductService service, FileProcessingService fileService, DetailRepository detailRepository) {
 		this.service = service;
 		this.fileService = fileService;
+		this.detailRepository = detailRepository;
 	}
 
+	//Gets all of the product
 	@GetMapping("/all")
 	public String getAllProducts(Model model) {
 		List<Product> prodList = service.getAllProducts();
@@ -42,136 +46,120 @@ public class ProductController {
 		return "product/all-products";
 	}
 
-	@GetMapping("/details")
-	public String getDetails(@RequestParam(name = "id") long id, Model model) {
-		model.addAttribute("detail", service.findAProduct(id));
-
-		return "product/detail-product";
-	}
-
+	//Add a new Product
 	@GetMapping("/add")
 	public String addProduct(Model model) {
 		model.addAttribute("prod", new Product());
+		model.addAttribute("listCategory", service.categorySelect());
 		return "product/add-product";
 	}
 
-	/*
-	 * @PostMapping("/create") public String createProduct(
-	 * 
-	 * @Valid @RequestParam String name,
-	 * 
-	 * @RequestParam String manufacturer,
-	 * 
-	 * @RequestParam String asin,
-	 * 
-	 * @RequestParam String ean,
-	 * 
-	 * @RequestParam String details,
-	 * 
-	 * @RequestParam("image") MultipartFile file, BindingResult bindingResult,
-	 * RedirectAttributes attributes ) {
-	 * 
-	 * String sucMessage = "You have added an attributre successfully!!!!"; String
-	 * failMessage = "Some thing wrong, Data has not been saved";
-	 * 
-	 * 
-	 * fileService.save(file);
-	 * 
-	 * Product product = new Product(); product.setName(name);
-	 * product.setManufacturer(manufacturer); product.setAsin(asin);
-	 * product.setEan(ean); product.setDetails(details);
-	 * product.setImage(StringUtils.cleanPath(file.getOriginalFilename()));
-	 * 
-	 * service.saveProduct(product);
-	 * 
-	 * if ( product != null ) { attributes.addFlashAttribute("success", sucMessage);
-	 * } else { attributes.addFlashAttribute("success", failMessage); }
-	 * 
-	 * 
-	 * return "redirect:all"; }
-	 */
-
+	//Create product in DB
 	@PostMapping("/create")
 	public String createAProductDemo(@Valid @ModelAttribute("prod") Product product, 
 			BindingResult result, 
 			@RequestParam("file") MultipartFile file,
-			RedirectAttributes attributes) {
-		if (file.isEmpty()) {
+			RedirectAttributes attributes, Model model) 
+	{
+		if (result.hasErrors()) {
+			model.addAttribute("listCategory", service.categorySelect());
+			return "product/add-product";
+		} else if (file.isEmpty()) {
 			return "redirect:/";
-		}
-		if (product.getAsin().isEmpty()) {
-			return "redirect:item/all";
-		}
-		
-		product.setImage(file.getOriginalFilename());
-		
-		fileService.save(file);
-		
-		service.saveProduct(product);
+		} else {
+			product.setImage(file.getOriginalFilename());
+			
+			fileService.save(file);
+			
+			service.saveProduct(product);
+			
+			attributes.addFlashAttribute("prodId", product);
 
-		return "redirect:all";
+			return "redirect:addDetails";
+		}
+	
 	}
 
-	/*
-	 * @PostMapping("/create") public String createProduct(
-	 * 
-	 * @Valid @ModelAttribute("prod") Product prod,
-	 * 
-	 * @RequestParam("image") MultipartFile file, BindingResult bindingResult,
-	 * RedirectAttributes attributes ) { String sucMessage =
-	 * "You have added an attributre successfully!!!!"; String failMessage =
-	 * "Some thing wrong, Data has not been saved";
-	 * 
-	 * if (bindingResult.hasErrors()) {
-	 * 
-	 * return "product/add-product";
-	 * 
-	 * } else {
-	 * 
-	 * prod.setImage(StringUtils.cleanPath(file.getOriginalFilename()));
-	 * 
-	 * fileService.save(file);
-	 * 
-	 * Product product = service.saveProduct(prod); if ( product != null ) {
-	 * attributes.addFlashAttribute("success", sucMessage); } else {
-	 * attributes.addFlashAttribute("success", failMessage); }
-	 * 
-	 * return "redirect:all"; }
-	 */
-
-	// Post mapping to save files
-	/*
-	 * @PostMapping("/upload") public String uploadImage(@RequestParam("image")
-	 * MultipartFile file, RedirectAttributes attributes) { if (file.isEmpty()) {
-	 * attributes.addFlashAttribute("message", "Please select a file to upload");
-	 * return "product/add-product"; } fileService.save(file);
-	 * 
-	 * return "redirect:all"; }
-	 */
-
+	//Update a product
 	@GetMapping("/updateProduct")
 	public String updateProduct(@RequestParam(name = "id") long id, Model model) {
 		Product product = service.findAProduct(id);
 		model.addAttribute("prod", product);
+		model.addAttribute("listCategory", service.categorySelect());
 		return "product/edit-product";
 	}
 
+	//Create updated product in DB
 	@PostMapping("/update")
-	public String updateProductMethod(@Valid @ModelAttribute("prod") Product prod, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
+	public String updateProductMethod(@Valid @ModelAttribute("prod") Product prod, BindingResult result, 
+			@RequestParam("file") MultipartFile file) {
+		if (result.hasErrors()) {
 			return "product/edit-product";
 		} else {
+			prod.setImage(file.getOriginalFilename());
+			fileService.save(file);
 			service.updateProduct(prod);
 			return "redirect:all";
 		}
 	}
 
+	//Delete a Product
 	@GetMapping("/delete")
 	public String deleteTheProduct(@RequestParam("id") long id, Model model) {
 		service.deleteProduct(id);
 		String message = "Product with id : " + id + " has been deleted";
 		model.addAttribute("delete", message);
 		return "redirect:all";
+	}
+	
+	//Gets details of the product
+	@GetMapping("/details")
+	public String getDetails(@RequestParam(name = "id") long id, Model model) {
+		Product product = service.findAProduct(id);
+		
+		model.addAttribute("pr", product);
+		
+		//model.addAttribute("detail", detailRepository.findByProd(id));
+		
+		return "product/detail-product";
+			
+	}
+	
+	//Add details of a product
+	@GetMapping("/addDetails")
+	public String addDetailsOfProducts(Model model) {
+		model.addAttribute("prodDetail", new Detail());
+		return "product/add-details";
+	}
+	
+	//Create details of a product in DB
+	@PostMapping("/addDetails")
+	public String createDetailsOfProduct(@Valid @ModelAttribute("prodDetail") Detail detail, BindingResult result, RedirectAttributes attributes) {
+		if (result.hasErrors()) {
+			return "redirect:addDetails";
+		} else {
+			
+			detail.setAsin(detail.getAsin().toUpperCase());
+			service.saveDetail(detail);
+			
+			return "redirect:all";
+		}
+
+	}
+	
+	//Gets details of a product
+	@GetMapping("/getDetails")
+	public String getDetailOfAProduct(@RequestParam("id") long id, Model model) {
+		
+		model.addAttribute("pr", service.findProductDetails(id));
+		
+		return "product/detail-product";
+	}
+	
+	//it is used in the jsp for creating checkboxes for the elements
+	@ModelAttribute("certificateModelAttribute")
+	public List<String> getCertificeteModels() {
+		return Arrays.asList("Halal", "Koshar", "Vegan");
 	}
 
 }

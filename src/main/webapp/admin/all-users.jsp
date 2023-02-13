@@ -9,34 +9,41 @@
 	 <table class="table table-striped">
             <thead class="table-primary">
                 <th> Nr.</th>
-                <th> Product ID</th>
-                <th> Purchase ID</th>
-                <th>State</th>
-                <th> Expiration Date</th>
-                <th> Quantity</th>
-                <th>Price </th>
-                
+                <th> User First Name</th>
+                <th> User Last Name</th>
+                <th>User Name</th>
+                <th>Is Expired </th>
+                <th>Is Locked </th>
+                <th>Is Credential </th>
+                <th>Is Enabled </th>
+                <th>Roles</th>    
                 <th colspan="2">Operations</th>
             </thead>
             <tbody>
              <% int i = 1; %>
-            <c:forEach items="${listItems}" var="item">          	
+            <c:forEach items="${listUsers}" var="item">          	
                 <tr>              
                     <th><%= i++ %></th>
-                    <td>${item.product.id }</td>
-                    <td>${item.purchase.id }</td>
-                    <td>${item.state }</td>
-                    <fmt:parseDate value="${item.expDate }" pattern="yyyy-MM-dd" var="datepattern" type="date" />
-                    <td><fmt:formatDate pattern="dd/MMM/yyyy" value = "${datepattern }" /></td>
-                    <td>${item.quantity }</td>
-                    <td>${item.price}</td>
+                    <td>${item.fName }</td>
+                    <td>${item.lName }</td>
+                    <td>${item.username }</td>
                     
+                    <td>${item.expired }</td>
+                    <td>${item.locked }</td>
+                    <td>${item.credExpired}</td>
+                    <td>${item.enabeled}</td>
                     <td>
-		                    <c:url var="updateLink" value="${contextPath }/item/updateItem">
+                    <c:forEach items="${item.roles }" var="ro" >
+                    	${ro } 
+                    </c:forEach>
+                    
+                    </td>
+                    <td>
+		                    <c:url var="updateLink" value="${contextPath }/admin/userUp">
 		                    	<c:param name="id" value = "${item.id }" />
 		                    </c:url>
 		                    
-		                    <c:url var="deleteLink" value="${contextPath }/item/delete">
+		                    <c:url var="deleteLink" value="${contextPath }/admin/userDel">
 		                    	<c:param name="id" value = "${item.id }" />
 		                    </c:url>
 		                    
@@ -54,7 +61,6 @@
 
             </tbody>
         </table>
-        <span class="text-danger"><c:out value="${delete }" /></span>
 
 </div>
 

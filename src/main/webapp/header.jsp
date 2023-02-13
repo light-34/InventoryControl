@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
@@ -14,7 +15,7 @@
   <link type="text/css" href="/webjars/bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet" />
   <script type="text/javascript" src="/webjars/bootstrap/5.2.0/js/bootstrap.bundle.min.js" > </script>
   <link rel="stylesheet" href="/css/main.css" type="text/css" />
-  <title>Spring Security Demo</title>
+  <title>Amazon Inventory Management System</title>
 
 </head>
 <body>

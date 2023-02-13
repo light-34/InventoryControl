@@ -1,6 +1,7 @@
 package com.inventory.entity;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -38,11 +40,11 @@ public class Item {
 	@Min(1)
 	private int quantity;
 	
-	@Column(name = "item_state", length = 2)
+	@Column(name = "item_state", length = 10)
 	@NotBlank(message = "Please enter purchased state")
 	private String state;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, 
+	@ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = {CascadeType.DETACH, 
 			  CascadeType.MERGE,
 			  CascadeType.PERSIST,
 			  CascadeType.REFRESH})
@@ -111,5 +113,7 @@ public class Item {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+
+	
 	
 }

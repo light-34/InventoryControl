@@ -10,9 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -27,20 +30,26 @@ public class Purchase {
 	@Column(name = "pur_date", length = 50)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;	
+	
+	@Column(name = "nr_items")
+	@Min(1)
+	private int nrItem;
 
-	@OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY, 
+	@OneToMany(mappedBy = "purchase", 
+			fetch = FetchType.LAZY, 
+			orphanRemoval = true,
 			cascade = {CascadeType.DETACH, 
 							  CascadeType.MERGE,
 							  CascadeType.PERSIST,
 							  CascadeType.REFRESH})
 	private Set<Item> items;
 	
-	@OneToOne(fetch = FetchType.LAZY, 
+	@ManyToOne( fetch = FetchType.LAZY,
 			cascade = {CascadeType.DETACH, 
 							  CascadeType.MERGE,
 							  CascadeType.PERSIST,
 							  CascadeType.REFRESH})
-	@JoinColumn(name = "store_id")
+	@JoinColumn(name = "store_id", referencedColumnName = "id")
 	private Store store;
 
 	public long getId() {
@@ -67,6 +76,14 @@ public class Purchase {
 		this.items = items;
 	}
 
+	public int getNrItem() {
+		return nrItem;
+	}
+
+	public void setNrItem(int nrItem) {
+		this.nrItem = nrItem;
+	}
+
 	public Store getStore() {
 		return store;
 	}
@@ -74,5 +91,8 @@ public class Purchase {
 	public void setStore(Store store) {
 		this.store = store;
 	}
+
+	
+
 
 }
