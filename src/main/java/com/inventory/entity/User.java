@@ -31,6 +31,10 @@ public class User {
 	@NotBlank(message = "This field cant be blank")
 	private String password;
 	
+	@Column(name = "email", length = 80, nullable = false, unique = true)
+	@NotBlank(message = "This field cant be blank")
+	private String email;
+	
 	@Column(name = "fname", nullable = false, length = 30)
 	@NotBlank(message = "This field cant be blank")
 	private String fName;
@@ -148,11 +152,19 @@ public class User {
 		this.roles = roles;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", fName=" + fName + ", lName=" + lName + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", fName="
+				+ fName + ", lName=" + lName + ", roles=" + roles + "]";
 	}
-	
-	
+
 	
 }

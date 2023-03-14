@@ -112,19 +112,6 @@ public class ProductController {
 		return "redirect:all";
 	}
 	
-	//Gets details of the product
-	@GetMapping("/details")
-	public String getDetails(@RequestParam(name = "id") long id, Model model) {
-		Product product = service.findAProduct(id);
-		
-		model.addAttribute("pr", product);
-		
-		//model.addAttribute("detail", detailRepository.findByProd(id));
-		
-		return "product/detail-product";
-			
-	}
-	
 	//Add details of a product
 	@GetMapping("/addDetails")
 	public String addDetailsOfProducts(Model model) {
@@ -151,7 +138,9 @@ public class ProductController {
 	@GetMapping("/getDetails")
 	public String getDetailOfAProduct(@RequestParam("id") long id, Model model) {
 		
-		model.addAttribute("pr", service.findProductDetails(id));
+		Product product = service.findAProduct(id);	
+		model.addAttribute("pr", product);
+		model.addAttribute("det", product.getDetails());
 		
 		return "product/detail-product";
 	}

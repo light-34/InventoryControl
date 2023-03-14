@@ -59,6 +59,13 @@ public class Product {
 					  CascadeType.PERSIST,
 					  CascadeType.REFRESH})
 	private Detail details;
+	
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
+			cascade = {CascadeType.DETACH, 
+					  CascadeType.MERGE,
+					  CascadeType.PERSIST,
+					  CascadeType.REFRESH})
+	private List<Review> reviews;
 
 	public Product() {
 		
@@ -127,5 +134,15 @@ public class Product {
 	public void setDetails(Detail details) {
 		this.details = details;
 	}
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+	
+	
 
 }

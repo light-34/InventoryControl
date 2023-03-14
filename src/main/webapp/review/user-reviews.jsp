@@ -5,32 +5,22 @@
 <%@include file="../header.jsp" %>
 
 <div class="container" >
-<h1>List of All Products</h1>
+<h1>Reviews done by .... </h1>
 	 <table class="table table-striped">
             <thead class="table-primary">
-                <th> Nr.</th>
-                <th> Product ID</th>
-                <th> Purchase ID</th>
-                <th>State</th>
-                <th> Expiration Date</th>
-                <th> Quantity</th>
-                <th>Price </th>
-                
+                <th> Product </th>
+                <th> Review</th>
+                <th> Rating </th>
                 <th colspan="2">Operations</th>
             </thead>
             <tbody>
              <% int i = 1; %>
-            <c:forEach items="${listItems}" var="item">          	
+            <c:forEach items="${listReviews}" var="item">          	
                 <tr>              
                     <th><%= i++ %></th>
-                    <td>${item.product.id }</td>
-                    <td>${item.purchase.id }</td>
-                    <td>${item.state }</td>
-                    <fmt:parseDate value="${item.expDate }" pattern="yyyy-MM-dd" var="datepattern" type="date" />
-                    <td><fmt:formatDate pattern="dd/MMM/yyyy" value = "${datepattern }" /></td>
-                    <td>${item.quantity }</td>
-                    <td>${item.price}</td>
-                    
+                    <td>${item.product.name }</td>
+                    <td>${item.reveiw }</td>
+                    <td>${item.rate }</td>
                     <td>
 		                    <c:url var="updateLink" value="${contextPath }/item/updateItem">
 		                    	<c:param name="id" value = "${item.id }" />
@@ -51,18 +41,11 @@
                     </td>
                 </tr>
               </c:forEach>
-              
-              
 
             </tbody>
         </table>
         <span class="text-danger"><c:out value="${delete }" /></span>
-		<c:forEach items="${items}" var="item">
-              <p>${item.quantity }</p>
-         </c:forEach>
-         <c:forEach items="${modItem}" var="item">
-              <p>${item.quantity }</p>
-         </c:forEach>
+
 </div>
 
 <%@include file="../footer.jsp"  %>

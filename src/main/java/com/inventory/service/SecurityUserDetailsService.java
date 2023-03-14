@@ -23,7 +23,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
 		User user = usersRepository.findByUsername(username);
 		
 		if (user == null) {
-			throw new UsernameNotFoundException("User not found");
+			throw new UsernameNotFoundException("User is not found");
 		}
 		return new InventoryUserDetails(user) ;
 	}

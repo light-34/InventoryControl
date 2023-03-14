@@ -1,8 +1,8 @@
 package com.inventory.controller;
 
+
 import javax.validation.Valid;
 
-import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.inventory.dto.Items;
-import com.inventory.entity.Item;
 import com.inventory.entity.Purchase;
 import com.inventory.service.ItemService;
 import com.inventory.service.ProductService;
@@ -55,31 +54,35 @@ public class TestController {
 		
 		purchaseService.savePurchase(purchase);
 		
-		  attributes.addFlashAttribute("thePurchase", purchase);
+		attributes.addFlashAttribute("thePurchase", purchase);
+		//attributes.addFlashAttribute("nrItem", purchase.getNrItem());
+		//attributes.addFlashAttribute("idPur", purchase.getId());
 
 		return "redirect:addItem";
 	}
 
 	@GetMapping("/addItem")
-	public String addItemsOfPurchase(Model model ) {	
+	public String addItemsOfPurchase(Model model ) {
+		
 		model.addAttribute("purit", new Items());
 		model.addAttribute("listProduct", productService.getAllProducts());
-		model.addAttribute("listPurchases", purchaseService.getAllPurchases());
 		model.addAttribute("states", service.getStates());
 		return "testweb/add-items-first";
 	}
 
 	@PostMapping("/createItems")
 	public String createPurItems(@Valid @ModelAttribute("purit") Items item, BindingResult result,
-			RedirectAttributes attributes) {
+			RedirectAttributes attributes, Model model) {
 		if (result.hasErrors()) {
 			return "redirect:addItem";
 		}
 
 		service.saveListItems(item);
 		
+		attributes.addFlashAttribute("items", item.getItemList());
+		model.addAttribute("modItem", item.getItemList());
 		
-		return "redirect:http://localhost:8080/item/all";
+		return "redirect:../item/all";
 	}
 	
 	@RequestMapping("/showData")

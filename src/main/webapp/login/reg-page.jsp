@@ -23,7 +23,13 @@
                     </div><br/>
                     <div class="row">
                         <div class="col">
-                            <form:input type="email" path="username" class="form-control-md" placeholder="Email" />
+                            <form:input type="email" path="email" class="form-control-md" placeholder="Email" />
+                            <form:errors path="email" class="text-danger"/>  
+                        </div>
+                    </div><br/>
+                    <div class="row">
+                        <div class="col">
+                            <form:input type="text" path="username" class="form-control-md" placeholder="Username" />
                             <form:errors path="username" class="text-danger"/>  
                         </div>
                     </div><br/>

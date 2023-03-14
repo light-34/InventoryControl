@@ -12,20 +12,22 @@
 	Purchase pur = (Purchase) request.getAttribute("thePurchase");
 	Items it = (Items) request.getAttribute("purit");
 	
-	for (int i = 0; i < pur.getNrItem(); i++) { 
-		  it.addItems(new Item());
-	  } 
+	int itemNumber = pur.getNrItem();
 	
-	
+	for(int i = 0; i < itemNumber; i++) {
+		it.addItems(new Item());
+	}
+		
 	List<Item> items  = it.getItemList();
 	%>
-	<p><%= items.size()  %></p>
-	
+	<p><%= itemNumber  %></p>
+	<p>Purchase Id :  <%= pur.getId()  %> </p>
 <form:form modelAttribute="purit" action="${contextPath }/test/createItems">	
 
-	<%	for(int i = 0; i < pur.getNrItem(); i++)  {%>
+	<%	for(int i = 0; i < itemNumber; i++)  {%>
 			<div class="row">
 				<form:hidden path="${items.get(i).purchase }" value="${pur.getId()}" />
+				
 					<!-- Get product ID -->
 				<div class="col-sm-2 mb-6">
 		        	<form:select path="${items.get(i).product }" class="form-select form-select-sm">
