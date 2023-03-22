@@ -54,10 +54,7 @@ public class Product {
 	private Set<Item> items;
 	
 	@OneToOne(mappedBy = "prod", fetch = FetchType.LAZY, 
-			cascade = {CascadeType.DETACH, 
-					  CascadeType.MERGE,
-					  CascadeType.PERSIST,
-					  CascadeType.REFRESH})
+			cascade = CascadeType.ALL)
 	private Detail details;
 	
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY,

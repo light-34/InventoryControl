@@ -9,23 +9,25 @@ import com.inventory.entity.Product;
 
 public interface ProductService {
 	
-	public List<Product> getAllProducts();
+	List<Product> getAllProducts();
 	
-	public Product findAProduct(long id);
+	Product findAProduct(long id);
 	
-	public Product saveProduct(Product product);
+	Product saveProduct(Product product);
 	
-	public void updateProduct(Product product);
+	void updateProduct(Product product);
 	
-	public void deleteProduct(long id);
+	void deleteProduct(long id);
 	
-	public Set<String> categorySelect();
+	Set<String> categorySelect();
 	
-	public Detail saveDetail(Detail detail);
+	Detail saveDetail(Detail detail);
 	
-	public Detail findDetail(long id);
+	Detail findDetail(long id);
 	
-	public List<ProductDetails> findProductDetails(long id);
+	List<ProductDetails> findProductDetails(long id);
+
+	boolean existsWithId(long id);
 	
 
 }

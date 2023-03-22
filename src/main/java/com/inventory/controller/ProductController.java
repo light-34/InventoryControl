@@ -25,9 +25,9 @@ import com.inventory.service.ProductService;
 @RequestMapping("/product")
 public class ProductController {
 
-	private ProductService service;
+	private final ProductService service;
 
-	private FileProcessingService fileService;
+	private final FileProcessingService fileService;
 	
 	private DetailRepository detailRepository;
 
@@ -105,10 +105,15 @@ public class ProductController {
 
 	//Delete a Product
 	@GetMapping("/delete")
-	public String deleteTheProduct(@RequestParam("id") long id, Model model) {
+	public String deleteTheProduct(@RequestParam("id") long id, RedirectAttributes attributes) {
 		service.deleteProduct(id);
-		String message = "Product with id : " + id + " has been deleted";
-		model.addAttribute("delete", message);
+		String [] message = {"Product with id : " + id + " has been deleted", "Product with id : " + id + " cant be deleted"};
+
+		if(service.existsWithId(id)) {
+			attributes.addFlashAttribute("success", message[1]);
+		} else {
+			attributes.addFlashAttribute("success", message[0]);
+		}
 		return "redirect:all";
 	}
 	

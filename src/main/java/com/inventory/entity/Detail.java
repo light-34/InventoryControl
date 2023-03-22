@@ -38,10 +38,7 @@ public class Detail {
 	private String certificates;
 	
 	@OneToOne(fetch = FetchType.LAZY, 
-			cascade = {CascadeType.DETACH, 
-					  CascadeType.MERGE,
-					  CascadeType.PERSIST,
-					  CascadeType.REFRESH})
+			cascade = CascadeType.ALL)
 	@JoinColumn(name = "product_id", referencedColumnName = "id")
 	private Product prod;
 

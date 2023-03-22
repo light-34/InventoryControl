@@ -20,9 +20,9 @@ import com.inventory.repository.ProductRepository;
 
 @Service
 public class ProductServiceImpl implements ProductService{
-	private ProductRepository repository;
+	private final ProductRepository repository;
 	
-	private DetailRepository detailRepository;
+	private final DetailRepository detailRepository;
 	
 	public ProductServiceImpl(ProductRepository repository, DetailRepository detailRepository) {
 		this.repository = repository;
@@ -58,6 +58,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public void deleteProduct(long id) {
+
 		repository.deleteById(id);
 		
 	}
@@ -95,6 +96,11 @@ public class ProductServiceImpl implements ProductService{
 		
 		return repository.findByIdDetails(id);
 		
+	}
+
+	@Override
+	public boolean existsWithId(long id) {
+		return repository.existsById(id);
 	}
 
 

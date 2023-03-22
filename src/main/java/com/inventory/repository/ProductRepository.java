@@ -12,6 +12,8 @@ import com.inventory.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 	
 	Product findById(long id);
+
+
 	
 	/*
 	 * @Query("SELECT new com.inventory.dto.ProductDetails(p.id, p.name, p.category, p.price, p.image, d.brand, d.asin, d.ean, d.ingredients, d.certificates)"
